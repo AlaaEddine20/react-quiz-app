@@ -1,0 +1,12 @@
+1) La home page mostra all'utente un input in cui l'utente 
+scrive il suo nome (candidateName).
+
+2) Sotto ci sarà un button che manda al componente ShowQuestions
+
+3) Il candidateName genererà un exam con un id e le 5 random 
+questions
+
+4) In ShowQuestions prendo l'exam passando l'id dell'exam per fare
+una get e mostrare questions ed answers
+
+ 
