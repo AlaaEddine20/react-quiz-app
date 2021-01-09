@@ -6,6 +6,7 @@ import Question from "../../styles/Question";
 import Wrapper from "../../styles/Wrapper";
 import Answers from "../../styles/Answers";
 import Answer from "../../styles/Answer";
+import NextQuestion from "../../styles/NextQuestion";
 
 class ShowQuestions extends React.Component {
   // STATES
@@ -47,6 +48,9 @@ class ShowQuestions extends React.Component {
               <Answer>{answer.text}</Answer>
             ))}
           </Answers>
+          <NextQuestion>
+            <p>Next</p>
+          </NextQuestion>
         </Wrapper>
       </Container>
     );
