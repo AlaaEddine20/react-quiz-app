@@ -5,6 +5,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import "./App.css";
 import Start from "./components/start/Start";
 import ShowQuestions from "./components/questions/ShowQuestions";
 

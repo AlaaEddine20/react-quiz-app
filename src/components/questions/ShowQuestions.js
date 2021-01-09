@@ -1,12 +1,20 @@
+// REACT
 import React from "react";
-import "./ShowQuestions.css";
+// STYLED COMPONENTS
+import Container from "../../styles/Container";
+import Question from "../../styles/Question";
+import Wrapper from "../../styles/Wrapper";
+import Answers from "../../styles/Answers";
+import Answer from "../../styles/Answer";
 
 class ShowQuestions extends React.Component {
+  // STATES
   state = {
     questions: [],
     answers: [],
   };
 
+  // FETCH
   async componentDidMount() {
     console.log("Getting data..");
     try {
@@ -17,23 +25,30 @@ class ShowQuestions extends React.Component {
         }
       );
       const data = await response.json();
-      console.log(data);
-      this.setState({ questions: data.rQuestions });
+      console.log(data.rQuestions[0].answers);
+      this.setState({ questions: data.rQuestions[0].text });
+      this.setState({ answers: data.rQuestions[0].answers });
     } catch (error) {
       console.log(error);
     }
   }
+
+  // RENDERING
   render() {
-    const { questions } = this.state;
-    // console.log(questions);
+    const { questions, answers } = this.state;
+    // console.log(questions.text);
     return (
-      <div>
-        {questions.map((question, idx) => (
-          <div ket={idx}>
-            <span>{question.text}</span>
-          </div>
-        ))}
-      </div>
+      <Container>
+        <Wrapper>
+          <Question>{questions}</Question>
+
+          <Answers>
+            {answers.map((answer) => (
+              <Answer>{answer.text}</Answer>
+            ))}
+          </Answers>
+        </Wrapper>
+      </Container>
     );
   }
 }
