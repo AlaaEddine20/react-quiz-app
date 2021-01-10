@@ -7,12 +7,16 @@ import Wrapper from "../../styles/Wrapper";
 import Answers from "../../styles/Answers";
 import Answer from "../../styles/Answer";
 import NextQuestion from "../../styles/NextQuestion";
+// COMPONENTS
+import FinalScore from "../finalScore/FinalScore";
 
 class ShowQuestions extends React.Component {
   // STATES
   state = {
     questions: [],
-    answers: [],
+    currentIndex: 0,
+    userAnswer: null,
+    score: 0,
   };
 
   // FETCH
@@ -26,32 +30,64 @@ class ShowQuestions extends React.Component {
         }
       );
       const data = await response.json();
-      console.log(data.rQuestions[0].answers);
-      this.setState({ questions: data.rQuestions[0].text });
-      this.setState({ answers: data.rQuestions[0].answers });
+
+      this.setState({
+        questions: data.rQuestions,
+        score: data.score,
+      });
+      console.log("HERE", data.rQuestions);
     } catch (error) {
       console.log(error);
     }
   }
 
-  // RENDERING
+  // NEXT QUESTION HANDLER
+  nextQuestionHandler = () => {
+    const { currentIndex } = this.state;
+
+    if (currentIndex < 5) {
+      this.setState({
+        currentIndex: this.state.currentIndex + 1, // INCREASE THE INDEX OF QUESTIONS ARRAY EVERY CLICK
+      });
+    } else {
+      alert("End of the quiz");
+    }
+  };
+
   render() {
-    const { questions, answers } = this.state;
-    // console.log(questions.text);
+    // RENDERING
+    console.log("Rendering.."); // FIRST RENDERING
+
+    const { questions, currentIndex } = this.state;
+
+    console.log(questions); // NO DATA AT FIRST RENDERING, RENDERS AFTER I HAVE DATA FROM THE FETCH
+
     return (
       <Container>
-        <Wrapper>
-          <Question>{questions}</Question>
+        {currentIndex < 5 ? (
+          <Wrapper>
+            <Question>
+              {/* NEED TO CHECK IF I HAVE DATA BEFORE RENDERING, SO THIS LINE TELLS DON'T RENDER TILL I HAVE DATA*/}
+              {questions.length > 0 ? questions[currentIndex].text : ""}
+            </Question>
 
-          <Answers>
-            {answers.map((answer) => (
-              <Answer>{answer.text}</Answer>
-            ))}
-          </Answers>
-          <NextQuestion>
-            <p>Next</p>
-          </NextQuestion>
-        </Wrapper>
+            <Answers>
+              {/* SAME, DON'T RENDER TILL I HAVE DATA FROM ComponentDidMount */}
+              {questions.length > 0 ? (
+                questions[currentIndex].answers.map((answer, id) => (
+                  <Answer key={id}>{answer.text}</Answer>
+                ))
+              ) : (
+                <div>no data</div>
+              )}
+            </Answers>
+            <NextQuestion>
+              <p onClick={this.nextQuestionHandler}>Next</p>
+            </NextQuestion>
+          </Wrapper>
+        ) : (
+          <FinalScore score={this.state.score} /> // END OF THE QUIZ COMPONENT WITH SCORE
+        )}
       </Container>
     );
   }
