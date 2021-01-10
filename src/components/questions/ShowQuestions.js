@@ -35,7 +35,7 @@ class ShowQuestions extends React.Component {
         questions: data.rQuestions,
         score: data.score,
       });
-      console.log("HERE", data.rQuestions);
+      // console.log("HERE", data.rQuestions);
     } catch (error) {
       console.log(error);
     }
@@ -54,13 +54,23 @@ class ShowQuestions extends React.Component {
     }
   };
 
+  handleAnswer = (e) => {
+    const { userAnswer, currentIndex, score, questions } = this.state;
+    // this.setState({ userAnswer: e.target.value });
+    console.log(e.target.value);
+    // if (questions[currentIndex].answers.isCorrect) {
+    //   this.setState({ score: +1 });
+    //   console.log(score);
+    // }
+  };
+
   render() {
     // RENDERING
-    console.log("Rendering.."); // FIRST RENDERING
+    // console.log("Rendering.."); // FIRST RENDERING
 
     const { questions, currentIndex } = this.state;
 
-    console.log(questions); // NO DATA AT FIRST RENDERING, RENDERS AFTER I HAVE DATA FROM THE FETCH
+    // console.log(questions); // NO DATA AT FIRST RENDERING, RENDERS AFTER I HAVE DATA FROM THE FETCH
 
     return (
       <Container>
@@ -75,7 +85,11 @@ class ShowQuestions extends React.Component {
               {/* SAME, DON'T RENDER TILL I HAVE DATA FROM ComponentDidMount */}
               {questions.length > 0 ? (
                 questions[currentIndex].answers.map((answer, id) => (
-                  <Answer key={id}>{answer.text}</Answer>
+                  <Answer key={id}>
+                    <div value={answer.isCorrect} onClick={this.handleAnswer}>
+                      {answer.text}
+                    </div>
+                  </Answer>
                 ))
               ) : (
                 <div>no data</div>
