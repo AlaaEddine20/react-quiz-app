@@ -9,7 +9,9 @@ const FinalScore = (props) => {
     <>
       <Container>
         <Wrapper>
-          <p>{props.score}</p>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            Score {props.score}/5
+          </div>
         </Wrapper>
       </Container>
     </>

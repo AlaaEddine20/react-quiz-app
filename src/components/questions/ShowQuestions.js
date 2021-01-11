@@ -30,12 +30,12 @@ class ShowQuestions extends React.Component {
         }
       );
       const data = await response.json();
-
+      console.log(data.rQuestions[this.state.currentIndex].answers[1]);
       this.setState({
         questions: data.rQuestions,
+        // correctAnswer: data.rQuestions.
         score: data.score,
       });
-      // console.log("HERE", data.rQuestions);
     } catch (error) {
       console.log(error);
     }
@@ -45,23 +45,17 @@ class ShowQuestions extends React.Component {
   nextQuestionHandler = () => {
     const { currentIndex } = this.state;
 
-    if (currentIndex < 5) {
-      this.setState({
-        currentIndex: this.state.currentIndex + 1, // INCREASE THE INDEX OF QUESTIONS ARRAY EVERY CLICK
-      });
-    } else {
-      alert("End of the quiz");
-    }
+    this.setState({
+      currentIndex: currentIndex + 1, // INCREASE THE INDEX OF QUESTIONS ARRAY EVERY CLICK
+    });
   };
 
-  handleAnswer = (e) => {
-    const { userAnswer, currentIndex, score, questions } = this.state;
-    // this.setState({ userAnswer: e.target.value });
-    console.log(e.target.value);
-    // if (questions[currentIndex].answers.isCorrect) {
-    //   this.setState({ score: +1 });
-    //   console.log(score);
-    // }
+  // ANSWER HANDLER
+  answerHandler = (e) => {
+    // const { userAnswer, currentIndex, questions } = this.state;
+    this.setState({
+      userAnswer: e.target.value,
+    });
   };
 
   render() {
@@ -86,7 +80,7 @@ class ShowQuestions extends React.Component {
               {questions.length > 0 ? (
                 questions[currentIndex].answers.map((answer, id) => (
                   <Answer key={id}>
-                    <div value={answer.isCorrect} onClick={this.handleAnswer}>
+                    <div value={answer.text} onClick={this.answerHandler}>
                       {answer.text}
                     </div>
                   </Answer>
