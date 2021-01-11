@@ -15,7 +15,6 @@ class ShowQuestions extends React.Component {
   state = {
     questions: [],
     currentIndex: 0,
-    userAnswer: null,
     score: 0,
   };
 
@@ -30,10 +29,10 @@ class ShowQuestions extends React.Component {
         }
       );
       const data = await response.json();
-      console.log(data.rQuestions[this.state.currentIndex].answers[1]);
+      console.log(data.rQuestions[this.state.currentIndex].answers);
       this.setState({
         questions: data.rQuestions,
-        // correctAnswer: data.rQuestions.
+        userAnswer: data.rQuestions[this.state.currentIndex].answers,
         score: data.score,
       });
     } catch (error) {
@@ -50,12 +49,13 @@ class ShowQuestions extends React.Component {
     });
   };
 
-  // ANSWER HANDLER
-  answerHandler = (e) => {
-    // const { userAnswer, currentIndex, questions } = this.state;
-    this.setState({
-      userAnswer: e.target.value,
-    });
+  handleAnswerClick = (isCorrect) => {
+    if (isCorrect) {
+      alert("Correct");
+      this.setState({ score: +1 });
+    } else {
+      alert("wrong");
+    }
   };
 
   render() {
@@ -80,7 +80,9 @@ class ShowQuestions extends React.Component {
               {questions.length > 0 ? (
                 questions[currentIndex].answers.map((answer, id) => (
                   <Answer key={id}>
-                    <div value={answer.text} onClick={this.answerHandler}>
+                    <div
+                      onClick={() => this.handleAnswerClick(answer.isCorrect)}
+                    >
                       {answer.text}
                     </div>
                   </Answer>
